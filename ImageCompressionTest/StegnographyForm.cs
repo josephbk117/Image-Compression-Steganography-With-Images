@@ -14,7 +14,7 @@ namespace ImageCompressionTest
         OpenFileDialog ofdImage;
         OpenFileDialog ofdFile;
         Bitmap bmp;
-        const int sizeAlloc = 100;
+        const int sizeAlloc = 1024;
 
         public StegnographyForm()
         {
@@ -72,15 +72,16 @@ namespace ImageCompressionTest
                         ar[h] = (byte)tempSize;
                         tempSize = 0;
                     }
-
-                    Console.WriteLine("A[h] : " + h + " = " + ar[h] + " ; " + i + " : pixel");
+                    
                 }
                 bmp2.SetPixel(i, 0, Color.FromArgb(ar[0], ar[1], ar[2], ar[3]));
             }
-           
-            
 
-            for (int i = sizeAlloc; i < bmp.Width; i++)
+            //Big gap because of this -i value
+
+            int count = 0;
+
+            for (int i = 0; i < bmp.Width; i++)
             {
                 for (int j = 0; j < bmp.Height; j++)
                 {
@@ -88,7 +89,7 @@ namespace ImageCompressionTest
                     byte G = bmp.GetPixel(i, j).G;
                     byte B = bmp.GetPixel(i, j).B;
 
-                    if (k < bArray.Length)
+                    if (k < bArray.Length && count > sizeAlloc)
                     {
                         bmp2.SetPixel(i, j, Color.FromArgb(255, bArray[k], G, B));
                         k++;
@@ -98,6 +99,7 @@ namespace ImageCompressionTest
                         byte R = bmp.GetPixel(i, j).R;
                         bmp2.SetPixel(i, j, Color.FromArgb(255, R, G, B));
                     }
+                    count++;
 
                 }
             }
@@ -122,20 +124,18 @@ namespace ImageCompressionTest
             }
            
             int k = 0;
-
-            for (int i = sizeAlloc; i < bmp3.Width; i++)
+            int count = 0;
+            for (int i = 0; i < bmp3.Width; i++)
             {
                 for (int j = 0; j < bmp3.Height; j++)
                 {
-
-                    if (k < genSize)
+                    if (k < genSize && count > sizeAlloc)
                     {
                         byte val = bmp3.GetPixel(i, j).R;
                         wr.Write(val);
                         k++;
                     }
-                    else
-                        break;
+                    count++;
                 }
             }
             wr.Close();
