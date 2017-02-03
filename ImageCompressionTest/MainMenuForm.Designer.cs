@@ -36,7 +36,7 @@
             // 
             // BW_compressionBtn
             // 
-            this.BW_compressionBtn.Location = new System.Drawing.Point(40, 78);
+            this.BW_compressionBtn.Location = new System.Drawing.Point(28, 78);
             this.BW_compressionBtn.Name = "BW_compressionBtn";
             this.BW_compressionBtn.Size = new System.Drawing.Size(162, 23);
             this.BW_compressionBtn.TabIndex = 0;
@@ -46,7 +46,7 @@
             // 
             // stenographyBtn
             // 
-            this.stenographyBtn.Location = new System.Drawing.Point(208, 78);
+            this.stenographyBtn.Location = new System.Drawing.Point(196, 78);
             this.stenographyBtn.Name = "stenographyBtn";
             this.stenographyBtn.Size = new System.Drawing.Size(203, 23);
             this.stenographyBtn.TabIndex = 1;
@@ -56,7 +56,7 @@
             // 
             // jbk_compressionBtn
             // 
-            this.jbk_compressionBtn.Location = new System.Drawing.Point(417, 78);
+            this.jbk_compressionBtn.Location = new System.Drawing.Point(405, 78);
             this.jbk_compressionBtn.Name = "jbk_compressionBtn";
             this.jbk_compressionBtn.Size = new System.Drawing.Size(140, 23);
             this.jbk_compressionBtn.TabIndex = 2;
@@ -69,7 +69,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(59, 9);
+            this.label1.Location = new System.Drawing.Point(44, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(493, 30);
             this.label1.TabIndex = 3;
@@ -80,11 +80,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(629, 118);
+            this.ClientSize = new System.Drawing.Size(572, 118);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.jbk_compressionBtn);
             this.Controls.Add(this.stenographyBtn);
             this.Controls.Add(this.BW_compressionBtn);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MainMenuForm";
             this.Text = "MainMenuForm";
             this.ResumeLayout(false);

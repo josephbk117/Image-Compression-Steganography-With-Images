@@ -14,7 +14,7 @@ namespace ImageCompressionTest
         OpenFileDialog ofdImage;
         OpenFileDialog ofdFile;
         Bitmap bmp;
-        const int sizeAlloc = 1024;
+        const int sizeAlloc = 512;
 
         public StegnographyForm()
         {
@@ -24,6 +24,7 @@ namespace ImageCompressionTest
         private void InputImagePictureBox_DoubleClick(object sender, EventArgs e)
         {
             ofdImage = new OpenFileDialog();
+            ofdImage.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*";
             if (ofdImage.ShowDialog() == DialogResult.OK)
             {
                 bmp = new Bitmap(ofdImage.FileName);
@@ -34,6 +35,7 @@ namespace ImageCompressionTest
         private void OpenFileButton_Click(object sender, EventArgs e)
         {
             ofdFile = new OpenFileDialog();
+            ofdFile.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*";
             if (ofdFile.ShowDialog() == DialogResult.OK)
             {
                 fileAdressTextBox.Text = ofdFile.FileName;
@@ -74,11 +76,10 @@ namespace ImageCompressionTest
                     }
                     
                 }
-                bmp2.SetPixel(i, 0, Color.FromArgb(ar[0], ar[1], ar[2], ar[3]));
+                bmp2.SetPixel(i, 0, Color.FromArgb(ar[0], ar[1], ar[2], ar[3])); //TODO : Can allow multi-line length specification
             }
 
-            //Big gap because of this -i value
-
+            
             int count = 0;
 
             for (int i = 0; i < bmp.Width; i++)
@@ -107,39 +108,74 @@ namespace ImageCompressionTest
             fs.Close();
 
             OutputImagePictureBox.Image = bmp2;
-            bmp2.Save("output.bmp");
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Image Files(*.BMP)|*.BMP;|All files (*.*)|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                bmp2.Save(sfd.FileName);
+            }
+            
         }
 
+        OpenFileDialog decryptOfd;
+        string openpath = "";
         private void decryptButton_Click(object sender, EventArgs e)
         {
-            Bitmap bmp3 = new Bitmap("output.bmp");
-            FileStream rf = new FileStream("retrivedFile.wav", FileMode.Create);
-            BinaryWriter wr = new BinaryWriter(rf);
+            Bitmap bmp3;
 
-            int genSize = 0;
-
-            for (int i = 0; i < sizeAlloc; i++)
+            if (openpath != "")
             {
-                genSize += bmp3.GetPixel(i, 0).A + bmp3.GetPixel(i, 0).R + bmp3.GetPixel(i, 0).G + bmp3.GetPixel(i, 0).B;
+                bmp3 = new Bitmap(openpath);                
             }
-           
-            int k = 0;
-            int count = 0;
-            for (int i = 0; i < bmp3.Width; i++)
+            else
             {
-                for (int j = 0; j < bmp3.Height; j++)
+                MessageBox.Show("Not put a path");
+                return;
+            }
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Image Files(*.BMP)|*.BMP;|All files (*.*)|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                textBoxOutput.Text = sfd.FileName;
+                FileStream rf = new FileStream(sfd.FileName, FileMode.Create);
+                BinaryWriter wr = new BinaryWriter(rf);
+
+                int genSize = 0;
+
+                for (int i = 0; i < sizeAlloc; i++)
                 {
-                    if (k < genSize && count > sizeAlloc)
-                    {
-                        byte val = bmp3.GetPixel(i, j).R;
-                        wr.Write(val);
-                        k++;
-                    }
-                    count++;
+                    genSize += bmp3.GetPixel(i, 0).A + bmp3.GetPixel(i, 0).R + bmp3.GetPixel(i, 0).G + bmp3.GetPixel(i, 0).B;
                 }
+
+                int k = 0;
+                int count = 0;
+                for (int i = 0; i < bmp3.Width; i++)
+                {
+                    for (int j = 0; j < bmp3.Height; j++)
+                    {
+                        if (k < genSize && count > sizeAlloc)
+                        {
+                            byte val = bmp3.GetPixel(i, j).R;
+                            wr.Write(val);
+                            k++;
+                        }
+                        count++;
+                    }
+                }
+                wr.Close();
+                rf.Close();
             }
-            wr.Close();
-            rf.Close();
+            MessageBox.Show("Image saved at : " + sfd.FileName);
+        }
+
+        private void buttonOpenDecrypt_Click(object sender, EventArgs e)
+        {
+            decryptOfd = new OpenFileDialog();
+            if (decryptOfd.ShowDialog() == DialogResult.OK)
+            {
+                openpath = decryptOfd.FileName;
+                textBoxDecryption.Text = openpath;
+            }
         }
     }
 }
