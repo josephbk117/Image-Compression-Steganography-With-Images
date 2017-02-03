@@ -14,9 +14,8 @@ namespace ImageCompressionTest
         OpenFileDialog ofdImage;
         OpenFileDialog ofdFile;
         Bitmap bmp;
+        const int sizeAlloc = 100;
 
-        int size = 0;//temp value to check before using meta data
-        
         public StegnographyForm()
         {
             InitializeComponent();
@@ -47,50 +46,59 @@ namespace ImageCompressionTest
             BinaryReader br = new BinaryReader(fs);
 
             byte[] bArray = br.ReadBytes((int)fs.Length);
-            size = bArray.Length;
+            int size = bArray.Length;
             Bitmap bmp2 = new Bitmap(bmp.Width, bmp.Height);
 
-            Console.WriteLine("Length of bytes in original = " + size);
+            
             int k = 0; // starts at 3 to leave space for byte length meta data
             //Each pixel can store a byte array length of 1020
             //So 3 pixels then = 3060
+            int tempSize = size;
 
-            for (int i = 0; i < 3; i++) //First 3 pixels
+            for (int i = 0; i < sizeAlloc; i++) //First sizeAlloc pixels
             {
-                byte A = 0, R =0, G =0, B =0;
+                byte A = 0, R = 0, G = 0, B = 0;
                 byte[] ar = new byte[4] { A, R, G, B };
                 for (int h = 0; h < 4; h++)
                 {
-                    if (size - 255 >= 255)
+                    if (tempSize >= 255)
                     {
                         ar[h] = 255;
-                        size -= 255;
-                    }
-                    else if (size < 255 && size >= 0)
-                    {
-                        ar[h] = (byte)size;
-                        size = 0;
-                    }
-                }
-               // bmp2.SetPixel(i, 0, Color.FromArgb(A,R,G,B));
-            }
+                        tempSize -= 255;
 
-            for (int i = 0; i < bmp.Width; i++)
+                    }
+                    else if (tempSize < 255)
+                    {
+                        ar[h] = (byte)tempSize;
+                        tempSize = 0;
+                    }
+
+                    Console.WriteLine("A[h] : " + h + " = " + ar[h] + " ; " + i + " : pixel");
+                }
+                bmp2.SetPixel(i, 0, Color.FromArgb(ar[0], ar[1], ar[2], ar[3]));
+            }
+           
+            
+
+            for (int i = sizeAlloc; i < bmp.Width; i++)
             {
                 for (int j = 0; j < bmp.Height; j++)
                 {
-                    byte R = bmp.GetPixel(i, j).R;
+                    
                     byte G = bmp.GetPixel(i, j).G;
                     byte B = bmp.GetPixel(i, j).B;
+
                     if (k < bArray.Length)
                     {
-                        bmp2.SetPixel(i, j, Color.FromArgb(bArray[k], R, G, B));
+                        bmp2.SetPixel(i, j, Color.FromArgb(255, bArray[k], G, B));
                         k++;
                     }
                     else
                     {
+                        byte R = bmp.GetPixel(i, j).R;
                         bmp2.SetPixel(i, j, Color.FromArgb(255, R, G, B));
                     }
+
                 }
             }
             br.Close();
@@ -103,26 +111,26 @@ namespace ImageCompressionTest
         private void decryptButton_Click(object sender, EventArgs e)
         {
             Bitmap bmp3 = new Bitmap("output.bmp");
-            FileStream rf = new FileStream("retrivedFile.bmp", FileMode.Create);
+            FileStream rf = new FileStream("retrivedFile.wav", FileMode.Create);
             BinaryWriter wr = new BinaryWriter(rf);
 
             int genSize = 0;
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < sizeAlloc; i++)
             {
                 genSize += bmp3.GetPixel(i, 0).A + bmp3.GetPixel(i, 0).R + bmp3.GetPixel(i, 0).G + bmp3.GetPixel(i, 0).B;
             }
-            Console.WriteLine("Length of bytes = " + genSize);
+           
             int k = 0;
 
-            for (int i = 0; i < bmp3.Width; i++)
+            for (int i = sizeAlloc; i < bmp3.Width; i++)
             {
                 for (int j = 0; j < bmp3.Height; j++)
                 {
 
-                    if (k < size)
+                    if (k < genSize)
                     {
-                        byte val = bmp3.GetPixel(i, j).A;
+                        byte val = bmp3.GetPixel(i, j).R;
                         wr.Write(val);
                         k++;
                     }
