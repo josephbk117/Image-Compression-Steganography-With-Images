@@ -53,8 +53,9 @@ namespace ImageCompressionTest
             Console.WriteLine("Length of bytes in original = " + size);
             int k = 0; // starts at 3 to leave space for byte length meta data
             //Each pixel can store a byte array length of 1020
+            //So 3 pixels then = 3060
 
-            /*for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++) //First 3 pixels
             {
                 byte A = 0, R =0, G =0, B =0;
                 byte[] ar = new byte[4] { A, R, G, B };
@@ -71,8 +72,8 @@ namespace ImageCompressionTest
                         size = 0;
                     }
                 }
-                bmp2.SetPixel(i, 0, Color.FromArgb(A,R,G,B));
-            }*/
+               // bmp2.SetPixel(i, 0, Color.FromArgb(A,R,G,B));
+            }
 
             for (int i = 0; i < bmp.Width; i++)
             {
