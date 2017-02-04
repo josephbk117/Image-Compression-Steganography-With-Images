@@ -42,6 +42,8 @@
             this.textBoxOutput = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.InputImagePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OutputImagePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -106,7 +108,7 @@
             // 
             // decryptButton
             // 
-            this.decryptButton.Location = new System.Drawing.Point(589, 423);
+            this.decryptButton.Location = new System.Drawing.Point(589, 469);
             this.decryptButton.Name = "decryptButton";
             this.decryptButton.Size = new System.Drawing.Size(159, 23);
             this.decryptButton.TabIndex = 6;
@@ -126,7 +128,7 @@
             // 
             // buttonOpenDecrypt
             // 
-            this.buttonOpenDecrypt.Location = new System.Drawing.Point(590, 388);
+            this.buttonOpenDecrypt.Location = new System.Drawing.Point(590, 434);
             this.buttonOpenDecrypt.Name = "buttonOpenDecrypt";
             this.buttonOpenDecrypt.Size = new System.Drawing.Size(159, 23);
             this.buttonOpenDecrypt.TabIndex = 11;
@@ -136,7 +138,7 @@
             // 
             // textBoxDecryption
             // 
-            this.textBoxDecryption.Location = new System.Drawing.Point(138, 388);
+            this.textBoxDecryption.Location = new System.Drawing.Point(138, 434);
             this.textBoxDecryption.Name = "textBoxDecryption";
             this.textBoxDecryption.Size = new System.Drawing.Size(446, 20);
             this.textBoxDecryption.TabIndex = 10;
@@ -145,7 +147,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(13, 382);
+            this.label4.Location = new System.Drawing.Point(13, 428);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(118, 26);
             this.label4.TabIndex = 9;
@@ -153,7 +155,7 @@
             // 
             // textBoxOutput
             // 
-            this.textBoxOutput.Location = new System.Drawing.Point(170, 425);
+            this.textBoxOutput.Location = new System.Drawing.Point(170, 471);
             this.textBoxOutput.Name = "textBoxOutput";
             this.textBoxOutput.Size = new System.Drawing.Size(413, 20);
             this.textBoxOutput.TabIndex = 13;
@@ -162,7 +164,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(13, 419);
+            this.label3.Location = new System.Drawing.Point(13, 465);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(151, 26);
             this.label3.TabIndex = 12;
@@ -172,18 +174,34 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(325, 359);
+            this.label5.Location = new System.Drawing.Point(325, 388);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(108, 26);
             this.label5.TabIndex = 14;
             this.label5.Text = "Decryption";
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(469, 355);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(280, 14);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 15;
             // 
             // StegnographyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(768, 453);
+            this.ClientSize = new System.Drawing.Size(768, 502);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxOutput);
             this.Controls.Add(this.label3);
@@ -203,7 +221,6 @@
             this.Name = "StegnographyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "StegnographyForm";
-            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.InputImagePictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OutputImagePictureBox)).EndInit();
             this.ResumeLayout(false);
@@ -227,5 +244,7 @@
         private System.Windows.Forms.TextBox textBoxOutput;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
