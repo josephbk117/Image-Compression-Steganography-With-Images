@@ -64,7 +64,7 @@ namespace ImageCompressionTest
                 return;
             }
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Image Files(*.BMP)|*.BMP;|All files (*.*)|*.*";
+            sfd.Filter = "Image Files(*.PNG)|*.PNG;|All files (*.*)|*.*";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 textBoxOutput.Text = sfd.FileName;
@@ -186,7 +186,7 @@ namespace ImageCompressionTest
         {
             OutputImagePictureBox.Image = (Bitmap)e.Result;
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Image Files(*.BMP)|*.BMP;|All files (*.*)|*.*";
+            sfd.Filter = "Image Files(*.PNG)|*.PNG;|All files (*.*)|*.*";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 OutputImagePictureBox.Image.Save(sfd.FileName);
